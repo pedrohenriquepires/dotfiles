@@ -3,6 +3,9 @@
 	email = pdrhenriquepires@gmail.com
 	username = pedrohenriquepires
 [alias]
+  parent = "!git show-branch | grep '*' | grep -v \"$(git rev-parse --abbrev-ref HEAD)\" | head -n1 | sed 's/.*\\[\\(.*\\)\\].*/\\1/' | sed 's/[\\^~].*//' #"
+  fodase = !git reset --hard && git clean -f -d
+  d = diff --word-diff
   s = status
   a = add
   b = branch
@@ -16,4 +19,5 @@
   status = auto
   branch = auto
   ui = true
-[http]
+[core]
+  excludesfile = ~/.gitignore_global
