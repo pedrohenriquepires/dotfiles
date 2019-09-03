@@ -1,0 +1,136 @@
+" Default settings {
+  let mapleader = "\<Space>"
+  set nocompatible
+  filetype off
+  syntax enable
+  set background=dark
+  set expandtab
+  set tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab
+  set number
+  set list
+  set mouse=a
+  set hlsearch
+  set colorcolumn=120
+  colorscheme atom-dark-256
+" }
+
+" Fold settings {
+  set foldenable
+  set foldmethod=indent
+  set foldnestmax=10
+  set foldlevel=99
+" }
+
+" CtrlP {
+  " Use filename as the default search method
+  let g:ctrlp_by_filename = 1
+  let g:ctrlp_max_files = 0
+  let g:ctrlp_working_path_mode = 'raw'
+
+  " Make CtrlP ignore files present in git ignore
+  let g:ctrlp_user_command = {
+   \ 'types': {
+      \ 1: ['.git', 'cd %s && git ls-files --cached --exclude-standard --others'],
+     \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+   \ },
+   \ 'fallback': 'find %s -type f'
+  \}
+" }
+
+" vim-test {
+  let test#javascript#mocha#options = '--reporter dot --no-colors --require app/assets/javascripts/tests/setup.js'
+  let test#strategy = "dispatch"
+  nmap <silent> <leader>t :TestNearest<CR><CR>
+  nmap <silent> <leader>T :TestFile<CR><CR>
+  nmap <silent> <leader>l :TestLast<CR><CR>
+" }
+
+" Remaps {
+  " set leader w as :w
+  noremap <leader>w :w<CR>
+
+  " set leader q as :q
+  noremap <leader>q :q<CR>
+
+  " Togglee NERDTree with F2, reveal file with F6
+  map <C-\> :NERDTreeToggle<CR>
+  "map <F2> :NERDTreeToggle<CR>
+  map <F6> :NERDTreeFind<CR>
+
+  " visual mode: don't deselect text when identing
+  vnoremap > >gv
+  vnoremap < <gv
+
+  " leader y as yank to OS clipboard
+  vmap <leader>y "+y
+
+  " reload vim
+  map <silent> <leader>r :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+" }
+
+" Navigation {
+
+  " set mapping to navigate between open split windows
+  nnoremap <C-j> <C-w>j
+  nnoremap <C-k> <C-w>k
+  nnoremap <C-h> <C-w>h
+  nnoremap <C-l> <C-w>l
+
+  " OSX Only: use option + {h,j,k,l} to resize the current window in a smart way
+  " (using percentages instead of a fixed value)
+  nnoremap <silent> ∆ :exe "resize " . (winheight(0) * 3/2)<CR>
+  nnoremap <silent> ˚ :exe "resize " . (winheight(0) * 2/3)<CR>
+  nnoremap <silent> ¬ :exe "vertical resize +15"<CR>
+  nnoremap <silent> ˙ :exe "vertical resize -15"<CR>
+
+" }
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" Plugins {
+  " let Vundle manage Vundle, required
+  Plugin 'gmarik/Vundle.vim'
+  " syntax checker
+  Plugin 'scrooloose/syntastic'
+  " NERDTee
+  Plugin 'scrooloose/nerdtree'
+  " RainbowParenthesesToggle
+  Plugin 'kien/rainbow_parentheses.vim'
+  " Smart defaults for vim (ex: incremental search, etc)
+  Plugin 'tpope/vim-sensible'
+  " allows you to use <Tab> for all your insert completion needs
+  Plugin 'ervandew/supertab'
+  " language packs for vim (support for a lot of different languages)
+  Plugin 'sheerun/vim-polyglot'
+  " automatic closing of quotes, parenthesis, brackets, etc
+  Plugin 'Raimondi/delimitMate'
+  " file, buffer and tag finder for vim
+  Plugin 'kien/ctrlp.vim'
+  " for aligning text
+  Plugin 'godlygeek/tabular'
+  " for aligning text too, not sure if I need two plugins for that
+  Plugin 'junegunn/vim-easy-align'
+  " vim markdown support
+  Plugin 'plasticboy/vim-markdown'
+  " shows colors in css files
+  Plugin 'ap/vim-css-color'
+  " vim dispatch is used by vim test
+  Plugin 'tpope/vim-dispatch'
+  " run tests automagically (mocha, rspec, etc)
+  Plugin 'janko-m/vim-test'
+  " ack plugin, for searching
+  Plugin 'mileszs/ack.vim'
+  " snippet plugin (SnipMate) and its dependencies
+  Plugin 'MarcWeber/vim-addon-mw-utils'
+  Plugin 'tomtom/tlib_vim'
+  Plugin 'garbas/vim-snipmate'
+
+  " Plugin for searching using the Ag command, requires the_silver_searcher
+  " package (available on homebrew)
+  Plugin 'rking/ag.vim'
+" }
+
+
+call vundle#end()
+filetype plugin indent on

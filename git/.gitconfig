@@ -1,0 +1,19 @@
+[user]
+	name = Pedro Henrique Pires
+	email = pdrhenriquepires@gmail.com
+	username = pedrohenriquepires
+[alias]
+  s = status
+  a = add
+  b = branch
+  cm = commit
+  c = checkout
+  l = log --oneline
+  p = push
+  pl = pull
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+  ui = true
+[http]
