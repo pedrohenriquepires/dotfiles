@@ -3,7 +3,7 @@
 ## Warning
 This is **my** personal dotfiles and it may not work as expected in your machine. 
 
-Guaranteed to work on `macOS Mojave 10.14.6` or later. Feel free to try on other OS.
+Guaranteed to work on `macOS Mojave 10.14.6` or later. Feel free to try it on another OS.
 
 ## Instalation
 
