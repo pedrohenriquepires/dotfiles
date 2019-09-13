@@ -11,7 +11,7 @@
   b = branch
   cm = commit
   c = checkout
-  l = log --oneline
+  l = log --oneline --graph
   p = push
   pl = pull
 [color]
