@@ -35,7 +35,7 @@ red() { printf "${RED}$1${NC}\n" }
 green() { printf "${GREEN}$1${NC}\n" }
 
 # expose some port to the world
-# Usage: expose <url> <port>
+# Usage: expose <name> <port>
 expose() {
   ssh -R $1:80:localhost:$2 serveo.net
 }
