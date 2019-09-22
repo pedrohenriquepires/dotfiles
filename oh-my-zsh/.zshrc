@@ -34,6 +34,12 @@ NC='\033[0m' # No Color
 red() { printf "${RED}$1${NC}\n" }
 green() { printf "${GREEN}$1${NC}\n" }
 
+# expose some port to the world
+# Usage: expose <url> <port>
+expose() {
+  ssh -R $1:80:localhost:$2 serveo.net
+}
+
 #temp c compiler
 c() {
   rm $1.out
