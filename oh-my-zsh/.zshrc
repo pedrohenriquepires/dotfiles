@@ -6,23 +6,9 @@ export GITHUB_PASSWORD=""
 
 # awesome alias :D
 alias genact='~/scripts/genact-osx'
-alias nrd='npm run deploy'
-alias rn='react-native'
-alias s='sudo'
-alias ms='mysql.server'
-alias fsa='forever stopall'
-alias fs='forever start\ -s'
-alias fp='forever stop'
-alias fl='forever list'
-alias ibi='ionic build ios'
-alias slogin='ruby ~/s/sonic-wall-login.rb'
-alias py='python'
 alias zshrc='vim ~/.zshrc'
 alias zshrc.apply='source ~/.zshrc'
 alias hyper-config='vim ~/.hyper.js'
-alias gcm='git commit -m "merge"'
-alias gpom='git push origin master'
-alias gs='git status | lolcat'
 alias tempo='curl -4 "http://wttr.in/Sao+Leopoldo?lang=pt"'
 alias go='git checkout'
 alias lzd='lazydocker'
@@ -129,7 +115,6 @@ export PATH=$PATH:$HOME/Library/Android/sdk/platform-tools
 source $ZSH/oh-my-zsh.sh
 
 export PATH="$HOME/.fastlane/bin:$PATH"
-
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
