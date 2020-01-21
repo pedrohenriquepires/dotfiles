@@ -1,5 +1,3 @@
-# the path to oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
 export ENV_PROJECT_FOLDER_NAME="Projetos"
 export GITHUB_USERNAME=""
 export GITHUB_PASSWORD=""
@@ -17,8 +15,8 @@ RED='\033[1;31m'
 GREEN='\033[1;32m'
 NC='\033[0m' # No Color
 
-red() { printf "${RED}$1${NC}\n" }
-green() { printf "${GREEN}$1${NC}\n" }
+red() { echo "${RED}$1${NC}\n" }
+green() { echo "${GREEN}$1${NC}\n" }
 
 # expose some port to the world
 # Usage: expose <name> <port>
@@ -26,15 +24,11 @@ expose() {
   ssh -R $1:80:localhost:$2 serveo.net
 }
 
-#temp c compiler
+# temp c compiler
 c() {
   rm $1.out
   gcc $1 -o $1.out #compile the file
   ./$1.out #execute the output file
-}
-
-up() {
-  cd `printf '../%.0s' {1..$1}`
 }
 
 # temp c++ compiler
@@ -44,53 +38,64 @@ cpp() {
 	rm $1.out #remove the output file
 }
 
+up() {
+  cd `printf '../%.0s' {1..$1}`
+}
+
 # Create a github repository
 create-repository() {
 	# env variables check
 	if [[ "$GITHUB_USERNAME" == "" && "$GITHUB_PASSWORD" == "" ]] then
-		printf "\n${RED}Please, check${NC} GITHUB_USERNAME ${RED}and${NC} GITHUB_PASSWORD ${RED}variables. :(${RED}\n"
+		echo "\n${RED}Please, check${NC} GITHUB_USERNAME ${RED}and${NC} GITHUB_PASSWORD ${RED}variables. :(${RED}\n"
 		return
 	fi
 	if [[ "$GITHUB_USERNAME" == "" ]] then
-		printf "\n${RED}Please, check${NC} GITHUB_USERNAME ${RED}variable. :(${NC}\n"
+		echo "\n${RED}Please, check${NC} GITHUB_USERNAME ${RED}variable. :(${NC}\n"
 		return
 	fi
 	if [[ "$GITHUB_PASSWORD" == "" ]] then
-		printf "\n${RED}Please, check${NC} GITHUB_PASSWORD ${RED}variable. :(${NC}\n"
+		echo "\n${RED}Please, check${NC} GITHUB_PASSWORD ${RED}variable. :(${NC}\n"
 		return
 	fi
 
 	curl --silent -u "$GITHUB_USERNAME:$GITHUB_PASSWORD" https://api.github.com/user/repos -d '{"name":"'$1'"}' > ~/.temp.txt
 	rm ~/.temp.txt
-	printf "\n${GREEN}Repository${NC} $1 ${GREEN}created! :D${NC}\n"
+	echo "\n${GREEN}Repository${NC} $1 ${GREEN}created! :D${NC}\n"
 
 	if [[ "$2" != "" ]] then
-		printf "${GREEN}Clonning at${NC} $2\n\n"
+		echo "${GREEN}Clonning at${NC} $2\n\n"
 		cd $2
 		git clone https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/$GITHUB_USERNAME/$1.git
-		printf "\n${GREEN}Done! :D\n"
+		echo "\n${GREEN}Done! :D\n"
 	fi
 }
 
-# ZSH theme
-ZSH_THEME="bullet-train"
-
-# bullet train config {
+# add the project name before the dir path
 prompt_project_dir() {
-	# extract directory project name
-	PROJECT_NAME=${${PWD#*/$ENV_PROJECT_FOLDER_NAME/}%%/*}
-	PROJECT_CAPITALIZED=$(tr '[:lower:]' '[:upper:]' <<< ${PROJECT_NAME:0:1})${PROJECT_NAME:1}
+  # extract the company name and the project path
+  COMPANY_NAME=${${PWD#*/$ENV_PROJECT_FOLDER_NAME/}%%/*}
+  PROJECT_PATH=${${PWD#*/$COMPANY_NAME}%%/}
 
-	# print the project name if exists
-	if [[ "$PROJECT_NAME" != "" ]] &&
-	prompt_segment 3 white $PROJECT_CAPITALIZED
+  # captalize the first letter of company
+  COMPANY_CAPITALIZED=$(tr '[:lower:]' '[:upper:]' <<< ${COMPANY_NAME:0:1})${COMPANY_NAME:1}
+
+  if [[ "$COMPANY_NAME" != "" ]] then
+    prompt_segment 3 white $COMPANY_CAPITALIZED
+
+    if [[ "$PROJECT_PATH" != "" ]] then
+      prompt_segment 4 white ${PROJECT_PATH:1}
+    fi
+  else
+    prompt_dir
+  fi
 }
+
+ZSH_THEME="bullet-train"
 
 # prompt order
 BULLETTRAIN_PROMPT_ORDER=(
 	time
 	project_dir
-	dir
 	git
 )
 
@@ -98,11 +103,16 @@ BULLETTRAIN_PROMPT_ORDER=(
 BULLETTRAIN_GIT_BG=10
 BULLETTRAIN_GIT_COLORIZE_DIRTY_BG_COLOR=white
 BULLETTRAIN_GIT_COLORIZE_DIRTY=true
-# }
-
 
 # plugins
-plugins=(git sudo wd zsh-autosuggestions zsh-better-npm-completion fast-syntax-highlighting)
+plugins=(
+  git 
+  sudo 
+  wd 
+  zsh-autosuggestions 
+  zsh-better-npm-completion 
+  fast-syntax-highlighting
+)
 
 # configs
 export LANG=en_US.UTF-8
@@ -110,12 +120,14 @@ export LC_ALL=en_US.UTF-8
 
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for ing
-export PATH=$PATH:$HOME/Library/Android/sdk/tools
-export PATH=$PATH:$HOME/Library/Android/sdk/platform-tools
-source $ZSH/oh-my-zsh.sh
-
+export PATH="$PATH:$HOME/Library/Android/sdk/tools"
+export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
 export PATH="$HOME/.fastlane/bin:$PATH"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# the path to oh-my-zsh installation.
+export ZSH=$HOME/.oh-my-zsh
+source $ZSH/oh-my-zsh.sh
