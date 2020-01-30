@@ -74,7 +74,7 @@ create-repository() {
 prompt_project_dir() {
   # extract the company name and the project path
   COMPANY_NAME=${${PWD#*/$ENV_PROJECT_FOLDER_NAME/}%%/*}
-  PROJECT_PATH=${${PWD#*/$COMPANY_NAME}%%/}
+  PROJECT_PATH=${${${PWD#*/$COMPANY_NAME}%%/}:1}
 
   # captalize the first letter of company
   COMPANY_CAPITALIZED=$(tr '[:lower:]' '[:upper:]' <<< ${COMPANY_NAME:0:1})${COMPANY_NAME:1}
@@ -83,7 +83,7 @@ prompt_project_dir() {
     prompt_segment 3 white $COMPANY_CAPITALIZED
 
     if [[ "$PROJECT_PATH" != "" ]] then
-      prompt_segment 4 white ${PROJECT_PATH:1}
+      prompt_segment 4 white $PROJECT_PATH
     fi
   else
     prompt_dir

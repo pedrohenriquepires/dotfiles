@@ -12,11 +12,11 @@ if [ ! -L "$target" ]; then
   yes | cp -rf $source $target
 fi
 
-mkdir -p $zshCustomDir/plugins/
-git clone https://github.com/zsh-users/zsh-autosuggestions $zshCustomDir/plugins/zsh-autosuggestions
+mkdir -p $ZSH_CUSTOM/plugins/
+git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
 
 # Copy all themes to /themes
-mkdir -p $zshCustomDir/themes/
-cp $DIR/themes/* $zshCustomDir/themes/
+mkdir -p $ZSH_CUSTOM/themes/
+cp $DIR/themes/* $ZSH_CUSTOM/themes/
 
 echo "Oh-My-Zsh setup successful."
