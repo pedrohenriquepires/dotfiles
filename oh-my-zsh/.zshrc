@@ -33,9 +33,9 @@ c() {
 
 # temp c++ compiler
 cpp() {
-	g++ -std=c++11 $1 -o $1.out  #compile the file
-	./$1.out #execute the output file
-	rm $1.out #remove the output file
+  g++ -std=c++11 $1 -o $1.out  #compile the file
+  ./$1.out #execute the output file
+  rm $1.out #remove the output file
 }
 
 up() {
@@ -45,29 +45,29 @@ up() {
 # Create a github repository
 create-repository() {
 	# env variables check
-	if [[ "$GITHUB_USERNAME" == "" && "$GITHUB_PASSWORD" == "" ]] then
-		echo "\n${RED}Please, check${NC} GITHUB_USERNAME ${RED}and${NC} GITHUB_PASSWORD ${RED}variables. :(${RED}\n"
-		return
-	fi
-	if [[ "$GITHUB_USERNAME" == "" ]] then
-		echo "\n${RED}Please, check${NC} GITHUB_USERNAME ${RED}variable. :(${NC}\n"
-		return
-	fi
-	if [[ "$GITHUB_PASSWORD" == "" ]] then
-		echo "\n${RED}Please, check${NC} GITHUB_PASSWORD ${RED}variable. :(${NC}\n"
-		return
-	fi
+  if [[ "$GITHUB_USERNAME" == "" && "$GITHUB_PASSWORD" == "" ]] then
+    echo "\n${RED}Please, check${NC} GITHUB_USERNAME ${RED}and${NC} GITHUB_PASSWORD ${RED}variables. :(${RED}\n"
+    return
+  fi
+  if [[ "$GITHUB_USERNAME" == "" ]] then
+    echo "\n${RED}Please, check${NC} GITHUB_USERNAME ${RED}variable. :(${NC}\n"
+    return
+  fi
+  if [[ "$GITHUB_PASSWORD" == "" ]] then
+    echo "\n${RED}Please, check${NC} GITHUB_PASSWORD ${RED}variable. :(${NC}\n"
+    return
+  fi  
 
-	curl --silent -u "$GITHUB_USERNAME:$GITHUB_PASSWORD" https://api.github.com/user/repos -d '{"name":"'$1'"}' > ~/.temp.txt
-	rm ~/.temp.txt
-	echo "\n${GREEN}Repository${NC} $1 ${GREEN}created! :D${NC}\n"
+  curl --silent -u "$GITHUB_USERNAME:$GITHUB_PASSWORD" https://api.github.com/user/repos -d '{"name":"'$1'"}' > ~/.temp.txt
+  rm ~/.temp.txt
+  echo "\n${GREEN}Repository${NC} $1 ${GREEN}created! :D${NC}\n"
 
-	if [[ "$2" != "" ]] then
-		echo "${GREEN}Clonning at${NC} $2\n\n"
-		cd $2
-		git clone https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/$GITHUB_USERNAME/$1.git
-		echo "\n${GREEN}Done! :D\n"
-	fi
+  if [[ "$2" != "" ]] then
+    echo "${GREEN}Clonning at${NC} $2\n\n"
+    cd $2
+    git clone https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/$GITHUB_USERNAME/$1.git
+    echo "\n${GREEN}Done! :D\n"
+  fi
 }
 
 # add the project name before the dir path
@@ -101,10 +101,10 @@ ZSH_THEME="bullet-train"
 
 # prompt order
 BULLETTRAIN_PROMPT_ORDER=(
-	time
-	custom_nvm
+  time
+  custom_nvm
   project_dir
-	git
+  git
 )
 
 # colors
