@@ -73,21 +73,28 @@ create-repository() {
 # add the project name before the dir path
 prompt_project_dir() {
   # extract the company name and the project path
-  COMPANY_NAME=${${PWD#*/$ENV_PROJECT_FOLDER_NAME/}%%/*}
-  PROJECT_PATH=${${${PWD#*/$COMPANY_NAME}%%/}:1}
+  local COMPANY_NAME=${${PWD#*/$ENV_PROJECT_FOLDER_NAME/}%%/*}
+  local PROJECT_PATH=${${PWD#*/$COMPANY_NAME}%%/}
 
   # captalize the first letter of company
-  COMPANY_CAPITALIZED=$(tr '[:lower:]' '[:upper:]' <<< ${COMPANY_NAME:0:1})${COMPANY_NAME:1}
+  local COMPANY_CAPITALIZED=$(tr '[:lower:]' '[:upper:]' <<< ${COMPANY_NAME:0:1})${COMPANY_NAME:1}
 
   if [[ "$COMPANY_NAME" != "" ]] then
     prompt_segment 3 white $COMPANY_CAPITALIZED
 
     if [[ "$PROJECT_PATH" != "" ]] then
-      prompt_segment 4 white $PROJECT_PATH
+      prompt_segment 4 white ${PROJECT_PATH:1}
     fi
   else
     prompt_dir
   fi
+}
+
+# show node version if found a .nvmrc file
+prompt_custom_nvm() {
+  [[ -a .nvmrc ]] || return
+
+  prompt_nvm
 }
 
 ZSH_THEME="bullet-train"
@@ -95,7 +102,8 @@ ZSH_THEME="bullet-train"
 # prompt order
 BULLETTRAIN_PROMPT_ORDER=(
 	time
-	project_dir
+	custom_nvm
+  project_dir
 	git
 )
 
@@ -103,6 +111,9 @@ BULLETTRAIN_PROMPT_ORDER=(
 BULLETTRAIN_GIT_BG=10
 BULLETTRAIN_GIT_COLORIZE_DIRTY_BG_COLOR=white
 BULLETTRAIN_GIT_COLORIZE_DIRTY=true
+
+# remove nvm prefix (⬡)
+BULLETTRAIN_NVM_PREFIX=""
 
 # plugins
 plugins=(
@@ -127,6 +138,36 @@ export PATH="$HOME/.fastlane/bin:$PATH"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+# call `nvm use` automatically in a directory with a .nvmrc file {
+autoload -U add-zsh-hook
+local NODE_LTS="$(nvm version default)"
+
+load-nvmrc() {
+  local node_version="$(nvm version)"
+
+  [[ -a .nvmrc || "$node_version" != "$NODE_LTS" ]] || return
+
+  local nvmrc_path="$(nvm_find_nvmrc)"
+
+  if [ -n "$nvmrc_path" ]; then
+    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+
+    if [ "$nvmrc_node_version" = "N/A" ]; then
+      nvm install
+    elif [ "$nvmrc_node_version" != "$node_version" ]; then
+      nvm use
+    fi
+  elif [ "$node_version" != "$(nvm version default)" ]; then
+    echo "Reverting to nvm default version"
+    nvm use default
+  fi
+}
+
+add-zsh-hook chpwd load-nvmrc
+load-nvmrc
+# }
 
 # the path to oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
