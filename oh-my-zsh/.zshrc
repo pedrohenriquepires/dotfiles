@@ -44,7 +44,7 @@ up() {
 
 # Create a github repository
 create-repository() {
-	# env variables check
+  # env variables check
   if [[ "$GITHUB_USERNAME" == "" && "$GITHUB_PASSWORD" == "" ]] then
     echo "\n${RED}Please, check${NC} GITHUB_USERNAME ${RED}and${NC} GITHUB_PASSWORD ${RED}variables. :(${RED}\n"
     return
@@ -56,7 +56,7 @@ create-repository() {
   if [[ "$GITHUB_PASSWORD" == "" ]] then
     echo "\n${RED}Please, check${NC} GITHUB_PASSWORD ${RED}variable. :(${NC}\n"
     return
-  fi  
+  fi
 
   curl --silent -u "$GITHUB_USERNAME:$GITHUB_PASSWORD" https://api.github.com/user/repos -d '{"name":"'$1'"}' > ~/.temp.txt
   rm ~/.temp.txt
@@ -71,7 +71,7 @@ create-repository() {
 }
 
 # add the project name before the dir path
-prompt_project_dir() {
+prompt_custom_dir() {
   # extract the company name and the project path
   local COMPANY_NAME=${${PWD#*/$ENV_PROJECT_FOLDER_NAME/}%%/*}
   local PROJECT_PATH=${${PWD#*/$COMPANY_NAME}%%/}
@@ -103,7 +103,7 @@ ZSH_THEME="bullet-train"
 BULLETTRAIN_PROMPT_ORDER=(
   time
   custom_nvm
-  project_dir
+  custom_dir
   git
 )
 
