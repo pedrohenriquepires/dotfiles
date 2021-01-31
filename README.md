@@ -1,4 +1,4 @@
-# Dotfiles
+# Dotfiles [!! DEPRECATED !!]
 
 ## Warning
 This is **my** personal dotfiles and it may not work as expected in your machine. 
