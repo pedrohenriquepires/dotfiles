@@ -3,13 +3,18 @@ export GITHUB_USERNAME=""
 export GITHUB_PASSWORD=""
 
 # awesome alias :D
-alias genact='~/scripts/genact-osx'
-alias zshrc='vim ~/.zshrc'
+alias vpn-connect='sudo openvpn --config ~/dev/vpn/pfSense-saipos-TCP4-4445-pedro.pires-config.ovpn --daemon --auth-user-pass ~/dev/vpn/credentials.txt'
+alias vpn-disconnect='sudo killall -SIGINT openvpn'
+alias zshrc='code ~/.zshrc'
 alias zshrc.apply='source ~/.zshrc'
 alias hyper-config='vim ~/.hyper.js'
-alias tempo='curl -4 "http://wttr.in/Sao+Leopoldo?lang=pt"'
 alias go='git checkout'
 alias lzd='lazydocker'
+alias open='wsl-open'
+alias ngrok='~/dev/ngrok'
+alias ngrok1='ngrok authtoken 1XIY5DFxosWr7rVBw9SFXxlOTjX_2EbAxUAf1KFrRQFCPMFpy'
+alias ngrok2='ngrok authtoken 1qvqWMEPtMoa0Z7KjQlHVZfIX4k_6XyBfKkSRTrGZYmxujcmT'
+alias code='silent_code'
 
 RED='\033[1;31m'
 GREEN='\033[1;32m'
@@ -18,24 +23,12 @@ NC='\033[0m' # No Color
 red() { echo "${RED}$1${NC}\n" }
 green() { echo "${GREEN}$1${NC}\n" }
 
-# expose some port to the world
-# Usage: expose <name> <port>
 expose() {
-  ssh -R $1:80:localhost:$2 serveo.net
+  npx localtunnel --port $1 --local-host localhost
 }
 
-# temp c compiler
-c() {
-  rm $1.out
-  gcc $1 -o $1.out #compile the file
-  ./$1.out #execute the output file
-}
-
-# temp c++ compiler
-cpp() {
-  g++ -std=c++11 $1 -o $1.out  #compile the file
-  ./$1.out #execute the output file
-  rm $1.out #remove the output file
+silent_code() {
+  nohup code $1 > /tmp/nohup.out
 }
 
 up() {
@@ -97,23 +90,13 @@ prompt_custom_nvm() {
   prompt_nvm
 }
 
-ZSH_THEME="bullet-train"
+# Pure Theme
+  fpath+=$HOME/.zsh/pure
+  autoload -U promptinit; promptinit
+  prompt pure
 
-# prompt order
-BULLETTRAIN_PROMPT_ORDER=(
-  time
-  custom_nvm
-  custom_dir
-  git
-)
-
-# colors
-BULLETTRAIN_GIT_BG=10
-BULLETTRAIN_GIT_COLORIZE_DIRTY_BG_COLOR=white
-BULLETTRAIN_GIT_COLORIZE_DIRTY=true
-
-# remove nvm prefix (⬡)
-BULLETTRAIN_NVM_PREFIX=""
+  zstyle :prompt:pure:path color "#F0D45E"
+  zstyle :prompt:pure:git:branch color green
 
 # plugins
 plugins=(
@@ -129,16 +112,22 @@ plugins=(
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="/snap/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for ing
-export PATH="$PATH:$HOME/Library/Android/sdk/tools"
-export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
-export PATH="$HOME/.fastlane/bin:$PATH"
+export PATH="$PATH:/mnt/c/Users/pdrhe/AppData/Local/Programs/Microsoft VS Code/bin" # Add code command
+export PATH="$PATH:$HOME/.nvm/versions/node/v16.13.0/bin/"
+
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+
+if [ -d "$HOME/bin" ] ; then
+    PATH="$HOME/bin:$PATH"
+fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 
 # call `nvm use` automatically in a directory with a .nvmrc file {
 autoload -U add-zsh-hook
